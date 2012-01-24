@@ -31,4 +31,5 @@ How it works
 Requirements
 ------------
 
-Not documented yet, though it takes a lot of memory.
+* 3.5 GB in to store the data
+* And at least 4 GB of free RAM 
