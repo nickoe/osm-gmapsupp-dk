@@ -1,0 +1,39 @@
+# Dette script er taget fra firkart.no og er tilpasset mit system
+# Nick Østergaard oe.nick@gmail.com
+
+
+echo "Lager turkart_sommer ...."
+DUMP="/tmp/OSM"
+HOME=$PWD
+PUBLIC="/afs/ies.auc.dk/user/nickoe/public_html/OSM"
+#PUBLIC="/tmp"
+
+cd $DUMP
+d=$(stat --format %y denmark.osm)
+d=${d%%' '*}
+d=`date -d $d +"%d.%m.%Y"`
+java -Xmx3072M -jar $HOME/tools/mkgmap/mkgmap.jar --ignore-osm-bounds --style-file=$HOME/styles --remove-short-arcs --family-name="OpenStreetMap Denmark" --mapname=63981001 --latin1 --net --route --road-name-pois -c nyfil.args
+if [ $? -gt 0 ]
+then
+   echo *** Kartlaging feilet
+   exit 1
+fi
+
+echo "Monterer kartblad og TYP-fil"
+java -Xmx3072M -jar $HOME/tools/mkgmap/mkgmap.jar --ignore-osm-bounds --style-file=$HOME/styles --family-name="OpenStreetMap Denmark. Hiking map summer." --description="Made by js1 v.${d%%}" --mapname=63981001 --family-id=981 --product-id=1 --latin1 --net --gmapsupp --route --road-name-pois $HOME/type/ID981.TYP 63981*.img
+if [ $? -gt 0 ]
+then
+   echo *** Kartmontering feilet
+   exit 1
+fi
+
+echo Lægger kort på nettet...
+#mv -f 63981*.* $PUBLIC
+mv -f gmapsupp.img $PUBLIC/gmapsupp-aau.img
+
+echo Generer md5sum...
+cd $PUBLIC
+md5sum gmapsupp-aau.img > MD5SUM
+echo md5sum færdig...
+#echo "Fjerner arbeidsfiler ...."
+echo "Ferdig!"

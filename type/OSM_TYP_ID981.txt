@@ -1,0 +1,591 @@
+;Section [_ID]
+;Define Family ID, ProductCode for which custom type definition shall be used - this section is important
+;ONLY if the TYP file is uploaded to GPS with MapSource. For sendmap20 ver 3.3 or above this section is not
+;obligatory
+[_id]
+ProductCode=1
+FID=981
+Codepage=1252
+[End]
+
+
+;Section [_DRAWORDER]
+;Polygon draw priority definition section
+;
+;Section defines which polygons are shown and in what order are draw in the device / MapSource
+;If a certain polygon type is not mentioned in the list then it will NOT BE VISIBLE IN THE DEVICE!
+;If your intention is to show all the polygons in device - you must prepare a full list of polygons!
+;
+;Draw order defines which polygons are to be visible on the top. Lowest priority is 1 while the highest is 12
+;
+;Format:
+;Type=POLYGON_CODE(HEX),PRIORITY
+;Extended/Marine types are stored as 3 byte values - see RGNtype.txt for the full list
+
+[_drawOrder]
+TYPE=1,1
+Type=2,1
+Type=3,1
+Type=4,1
+Type=5,5	;parkering
+Type=6,1
+Type=7,1
+Type=8,3	;shopping
+Type=9,1
+Type=0x0a,3	;skole
+Type=0x0b,2
+Type=0x0c,3	;industriområde
+Type=0x0d,2
+Type=0x0e,2
+Type=0x0f,2
+Type=0x10,2
+Type=0x11,2
+Type=0x12,2
+Type=0x13,5	;bygninger
+Type=0x14,2
+Type=0x15,2
+Type=0x16,2
+Type=0x17,3
+Type=0x18,3
+Type=0x19,5	;pitch
+Type=0x1a,4
+Type=0x1b,2
+Type=0x1c,2
+Type=0x1d,2
+Type=0x1e,2
+Type=0x1f,2
+Type=0x20,2
+Type=0x21,2	;residential
+Type=0x22,2
+Type=0x23,2
+Type=0x24,2
+Type=0x25,2
+Type=0x26,2
+Type=0x27,2
+Type=0x28,1
+Type=0x29,1
+Type=0x30,2
+Type=0x31,2
+Type=0x32,1
+Type=0x3b,1
+Type=0x3c,4
+Type=0x3d,4
+Type=0x3e,4
+Type=0x3f,4
+Type=0x40,8
+Type=0x41,8
+Type=0x42,8
+Type=0x43,8
+Type=0x44,4
+Type=0x45,2
+Type=0x46,2
+Type=0x47,2
+Type=0x48,3
+Type=0x49,4
+Type=0x4c,5
+Type=0x4d,5
+Type=0x4e,2	;farm
+Type=0x4f,5
+Type=0x50,1	;skov
+Type=0x51,6
+Type=0x52,4
+Type=0x53,5
+[end]
+
+
+;Section [_LINE]
+;
+;Custom line definition - changes 'look & feel' of the built in type
+;
+;There are basically two types of definition 
+; - as line
+; - as bitmap
+;
+;For the 'line' definition it is possible to define
+; - Line widht
+; - Border widht
+;
+;For the 'bitmap' definition it is possible to define
+; - Bitmap for the line - 32 pixel long and 1 to 32 pixel high
+; - Bitmap color - with maximum 2 colors only
+;
+;Common attributes are:
+; - Type - Line type to be substitute
+; - Day foreground color
+; - Day background color - if not defined of '-1' then color is not used (invisible)
+; - Night foreground color
+; - Night background color  - if not defined of '-1' then color is not used (invisible)
+;
+;UseOrientation=Y|N - if set to true, then device will try to rotate the bitmap in the line direction
+;
+;Antialias=Y|N
+;
+;Definition of colors and bitmap is done with format similar to the XPM bitmap format
+;
+;In below example there is a definition of bitmap 32 pixels wide and 5 pixel heigh with 2 colors
+;and 1 char long alias name for the color
+;
+;IT IS FORBIDDEN TO USE LITERAL NAMES IN THE DEFINITION EXCEPT 'none' COLOR!
+;
+;Color #203040 means - 0x20 for the red part, 0x30 for the green part and 0x40 for the blue part
+;#ffffff is white
+;#000000 is black
+;
+;Xpm="32 5 2 1"
+;"# c #000000" < day / night foreground
+;"  c #fffff0" < day / night background
+;"################################"
+;"   ########        ########     "
+;"   ########        ########     "
+;"   ########        ########     "
+;"################################"
+;
+;
+;If line is defined NOT as the bitmap - then the XPM define only colors:
+;Xpm=0 0 2 1"
+;"1 c #123456"
+;"2 c #987654"
+;
+; First two colors are for day - if 'none' color is defined - it will be always foreground
+; otherwise - first color is foreground, second is background
+;
+; Next (optional) two colors are for night mode - with remarks as above
+;
+;Xpm=0 0 4 1"
+;"1 c #123456" < day foreground
+;"2 c #987654" < day background
+;"3 c #123456" < night foreground
+;"4 c #987654" < night background
+;
+;Name substitution
+; - Stings1-4 - substitution for up to 4 languages - consist from language code and name
+;
+;StringX=code,literal name
+;
+;Language codes:
+;0x00 - unspecified
+;0x01 - french
+;0x02 - german
+;0x03 - dutch
+;0x04 - english
+;0x05 - italian
+;0x06 - finnish
+;0x07 - swedish
+;0x08 - spanish
+;0x09 - basque
+;0x0a - catalan
+;0x0b - galician
+;0x0c - welsh
+;0x0d - gaelic
+;0x0e - danish
+;0x0f - norwegian
+;0x10 - portuguese
+;0x11 - slovak
+;0x12 - czech
+;0x13 - croatian
+;0x14 - hungarian
+;0x15 - polish
+;0x16 - turkish
+;0x17 - greek
+;0x18 - slovenian
+;0x19 - russian
+;0x1a - estonian
+;0x1b - latvian
+;0x1c - romanian
+;0x1d - albanian
+;0x1e - bosnian
+;0x1f - lithuanian
+;0x20 - serbian
+;0x21 - macedonian
+;0x22 - bulgarian
+
+[_line]
+;Endre sti
+Type=0x16
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+Xpm="32 1 2 1"
+"# c #000000"
+"  c #ffffff"
+"  ####    ####    ####    ####  "
+[end]
+
+[_line]
+;Egendefinert liten sti
+Type=0x12
+string1=0x04,Small trail
+string2=0x0f,Liten sti
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+Xpm="32 1 2 1"
+"# c #000000"
+"  c #ffffff"
+"  ##     ##    ##     ##    ##  "
+[end]
+
+[_line]
+;Egen customstil for track - trakktorvei
+Type=0x0d
+string1=0x04,Track
+string2=0x0f,Traktorvei
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+Xpm="32 2 2 1"
+"# c #333333"
+"  c #ffffff"
+"  #######    #######    ######  "
+"  #######    #######    ######  "
+[end]
+
+[_line]
+;Lage blåsti
+Type=0x0e
+string1=0x04,Marked trail
+string2=0x0f,Merket sti
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+Xpm="32 2 2 1"
+"# c #3333ff"
+"  c #ffffff"
+"  ####    ####    ####    ####  "
+"################################"
+[end]
+
+[_line]
+;Egen rødmerket vinterløype
+Type=0x0f
+string1=0x04,Marked cross country track
+string2=0x0f,Merket skiløype
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+Xpm="32 2 2 1"
+"# c #ff0000"
+"  c #ffffff"
+"  ####    ####    ####    ####  "
+"################################"
+[end]
+
+[_line]
+;egendefinert gangvei
+Type=0x10
+LineWidth=3
+BorderWidth=1
+string1=0x04,Foot path
+string2=0x0f,Gangvei
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+xpm="0 0 2 0"
+"1 c #ffc8c8"
+"2 c #ff2222"
+[end]
+
+[_line]
+;egendefinert sykkelvei
+Type=0x11
+LineWidth=3
+BorderWidth=1
+string1=0x04,Bicycle path
+string2=0x0f,Sykkelsti
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+xpm="0 0 2 0"
+"1 c #bbbbff"
+"2 c #0000ff"
+[end]
+
+; Endrer skog (nature=woods) til lys grønn farge
+[_polygon]
+Type=0x50
+Xpm="0 0 2 1"
+"1 c #90ff90"
+"2 c none"
+[end]
+
+; Endrer farm og farmyard til brun
+[_polygon]
+Type=0x4e
+string1=0x04,Farm
+string2=0x0f,Jordbruksområde
+Xpm="0 0 2 1"
+"1 c #d0c49c"
+"2 c none"
+[end]
+
+; Egendefinert område for residential area
+[_polygon]
+Type=0x21
+string1=0x04,Residential area
+string2=0x0f,Boligområde
+Xpm="0 0 2 1"
+"1 c #dfdada"
+"2 c none"
+[end]
+
+; Endret farge på parkering
+[_polygon]
+Type=0x05
+xpm="0 0 2 1"
+"1 c #edee85"
+"2 c none"
+[end]
+
+; Endret farge på bygninger
+[_polygon]
+Type=0x13
+string1=0x04,Building
+string2=0x0f,Bygning
+xpm="0 0 2 1"
+"1 c #b38774"
+"2 c none"
+[end]
+
+; Endret farge på skoler
+[_polygon]
+Type=0x0a
+xpm="0 0 2 1"
+"1 c #fff9b2"
+"2 c none"
+[end]
+
+[_line]
+;Egendefinert strømlinje
+Type=0x29
+UseOrientation=Y
+Antialias=Y
+Xpm="32 5 2 1"
+"# c #333333"
+"  c #ffffff"
+"           ###                  "
+"             #                  "
+"################################"
+"             #                  "
+"           ###                  "
+[end]
+
+; Endret farge på industriområde
+[_polygon]
+Type=0x0c
+xpm="0 0 2 1"
+"1 c #fcb6ff"
+"2 c none"
+[end]
+
+; Endret farge på shoppingområde
+[_polygon]
+Type=0x08
+xpm="0 0 2 1"
+"1 c #ffc9c9"
+"2 c none"
+[end]
+
+; Endrer farge på tertiervei til litt gulere
+;[_line]
+;Type=0x05
+;BorderWidth=1
+;xpm="0 0 4 0"
+;"1 c #ffee5f"
+;"2 c #cfb900"
+;"3 c #ffee5f"
+;"4 c #cfb900"
+;[end]
+
+; Egen minor høydekurve
+[_line]
+Type=0x21
+UseOrientation=Y
+Antialias=Y
+xpm="32 1 1 1"
+"# c #cc9837"
+"################################"
+[end]
+
+; Egen medium høydekurve
+[_line]
+Type=0x22
+UseOrientation=Y
+Antialias=Y
+xpm="32 2 1 1"
+"# c #cc9837"
+"################################"
+"################################"
+[end]
+
+; Egendefinert område for eng
+[_polygon]
+Type=0x22
+string1=0x04,Meadow
+string2=0x0f,Eng
+xpm="0 0 2 1"
+"1 c #64e364"
+"2 c none"
+[end]
+
+; Egendefinert punkt for ubetjent DNT-hytte
+[_point]
+Type=0x3901
+Antialias=Y
+string2=0x04,DNT no service cabin
+string1=0x0f,DNT ubetjent hytte
+xpm="16 16 3 1"
+"  c None"
+"# c #ff0000"
+". c #ffffff"
+"                "
+"       ##       "
+"     ######     "
+"   ####..####   "
+" ###........### "
+"################"
+"################"
+"  ##........##  "
+"  ##........##  "
+"  ##........##  "
+"  ##........##  "
+"  ##........##  "
+"  ############  "
+"  ############  "
+"                "
+"                "};
+[end]
+
+; Egendefinert punkt for selvbetjent DNT-hytte
+[_point]
+Type=0x3902
+Antialias=Y
+string2=0x04,DNT self service cabin
+string1=0x0f,DNT selvbetjent hytte
+xpm="16 16 3 1"
+"  c None"
+"# c #ff0000"
+". c #ffffff"
+"                "
+"       ##       "
+"     ######     "
+"   ####..####   "
+" ###........### "
+"################"
+"################"
+"  ##.......###  "
+"  ##......####  "
+"  ##....######  "
+"  ##...#######  "
+"  ##.#########  "
+"  ############  "
+"  ############  "
+"                "
+"                "};
+[end]
+
+; Egendefinert punkt for betjent DNT-hytte
+[_point]
+Type=0x3903
+Antialias=Y
+string2=0x04,DNT staffed lodge
+string1=0x0f,DNT betjent hytte
+xpm="16 16 3 1"
+"  c None"
+"# c #ff0000"
+". c #ffffff"
+"                "
+"       ##       "
+"     ######     "
+"   ####..####   "
+" ###........### "
+"################"
+"################"
+"  ############  "
+"  ############  "
+"  ############  "
+"  ############  "
+"  ############  "
+"  ############  "
+"  ############  "
+"                "
+"                "};
+[end]
+
+; Egendefinert farge på kystlinje. Bruker 2c istedet for default da den vises på lavere zoomnivå.
+[_line]
+Type=0x2c
+LineWidth=2
+BorderWidth=0
+string2=0x04, Coastline
+string1=0x0f, Kystlinje
+Xpm="0 0 2 0"
+"1 c #6996d2"
+"2 c none"
+[end]
+
+; Endret farge på isbre
+[_polygon]
+Type=0x4d
+xpm="0 0 2 1"
+"1 c #92ffdb"
+"2 c none"
+[end]
+
+[_line]
+;Egen def av grense nasjonalpark
+Type=0x1e
+string1=0x04, National Park
+string2=0x0f, Nasjonalpark
+;try to rotate bitmap in the right direction
+UseOrientation=Y
+Antialias=Y
+Xpm="32 2 2 1"
+"# c #00aa00"
+"  c none
+"##  ##########  ##  ##########  "
+"##  ##########  ##  ##########  "
+[end]
+
+; Endret farge på vann
+[_polygon]
+Type=0x3c
+xpm="0 0 2 1"
+"1 c #6996d2"
+"2 c none"
+[end]
+
+; Endre farge på sjø
+[_polygon]
+Type=0x32
+xpm="0 0 2 1"
+"1 c #6996d2"
+"2 c none"
+[end]
+
+; Endre farge på riverbank
+[_polygon]
+Type=0x46
+xpm="0 0 2 1"
+"1 c #6996d2"
+"2 c none"
+[end]
+
+; Endre farge på elv (canal, drain og river)
+[_line]
+Type=0x1f
+LineWidth=2
+BorderWidth=0
+xpm="0 0 2 0"
+"1 c #6996d2"
+"2 c none"
+[end]
+
+; Endre farge på bekk (stream)
+[_line]
+Type=0x18
+LineWidth=2
+BorderWidth=0
+xpm="0 0 2 0"
+"1 c #6996d2"
+"2 c none"
+[end]

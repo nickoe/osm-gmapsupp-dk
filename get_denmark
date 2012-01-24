@@ -1,0 +1,40 @@
+clear
+LAND=denmark
+DUMP="/tmp/OSM"
+#HOME="/home/nickoe/OSM-DK"
+HOME=$PWD
+mkdir $DUMP
+cd $DUMP
+echo "'$DUMP' =" $DUMP
+rm 632401*
+#Sletter fil hvis den eksisterer
+[ -f $LAND.osm.bz2 ] && rm $LAND.osm.bz2
+wget --no-cache http://download.geofabrik.de/osm/europe/$LAND.osm.bz2
+if [ $? -gt 0 ]
+then
+   echo *** Nedlasting feilet
+   exit 1
+fi
+echo "Unzipping file ...."
+bunzip2 -vf $LAND.osm.bz2
+if [ $? -gt 0 ]
+then
+   echo *** Utpakking feilet
+   exit 1
+fi
+echo "Splitter fil ...."
+java -Xmx1024M -jar $HOME/tools/splitter/splitter.jar --mapid=63240101 --max-nodes=2000000 $DUMP/$LAND.osm
+if [ $? -gt 0 ]
+then
+   echo *** Splitting feilet
+   exit 1
+fi
+$HOME/lagargsfilnorge
+if [ $? -gt 0 ]
+then
+   echo *** Generering av nyfil.args feilet
+   exit 1
+fi
+
+echo $HOME
+cd $HOME
