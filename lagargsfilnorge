@@ -1,16 +1,16 @@
 #!/usr/bin/perl
 
-print "Lager ny .args-fil for Danmark ...\n";
+print "Generating new .args-file for Denmark ...\n";
 
-open(FIL, "template.args") or die"*** Kan ikke åpne fil \"template.args\".\n";
-open(NYFIL, ">nyfil.args") or die "Kan ikke opprette fil \"nyfil.args\".\n";
+open(FIL, "template.args") or die "*** Can not open file \"template.args\"\n";
+open(NYFIL, ">nyfil.args") or die "*** Can not create file \"nyfil.args\"\n";
 while($line=<FIL>) {
    
    if($line =~ "mapname:") {
       print $line;
-      print NYFIL "description: OSM map. Made by ArchLinux\n";
+      print NYFIL "description: OSM map. Made by nickoe and other contribuators.\n";
       print NYFIL "country-name: Denmark\n";
-      print NYFIL "country-abbr: DA\n";
+      print NYFIL "country-abbr: DK\n";
    
    }
    if($line =~ "input-file:") {
@@ -24,4 +24,4 @@ while($line=<FIL>) {
 close FIL;
 close NYFIL;
 
-# print "Ferdig. \n";
+print "Finished making new .args-file for Denmark ...\n";

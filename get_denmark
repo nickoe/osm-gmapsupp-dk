@@ -1,38 +1,44 @@
 clear
-LAND=denmark
-DUMP="/tmp/OSM"
-#HOME="/home/nickoe/OSM-DK"
-HOME=$PWD
+
+LAND=denmark		# Country
+DUMP="/tmp/OSM"	# Where to keep our temporary data
+HOME=$PWD				# Where the scripts resides
+
 mkdir $DUMP
 cd $DUMP
-echo "'$DUMP' =" $DUMP
-rm 632401*
-#Sletter fil hvis den eksisterer
+echo "'$DUMP' =" $DUMP # Prints where we said we keep our data
+rm 632401*						 # Removes old files
+
+# Deletes *.som.bz2 if it exists and get a new one
 [ -f $LAND.osm.bz2 ] && rm $LAND.osm.bz2
 wget --no-cache http://download.geofabrik.de/osm/europe/$LAND.osm.bz2
 if [ $? -gt 0 ]
 then
-   echo *** Nedlasting feilet
+   echo *** Download failed
    exit 1
 fi
-echo "Unzipping file ...."
+
+echo "Unzipping file ..."
 bunzip2 -vf $LAND.osm.bz2
 if [ $? -gt 0 ]
 then
-   echo *** Utpakking feilet
+   echo *** Unzipping failed
    exit 1
 fi
-echo "Splitter fil ...."
+
+echo "Splitting file ..."
 java -Xmx1024M -jar $HOME/tools/splitter/splitter.jar --mapid=63240101 --max-nodes=2000000 $DUMP/$LAND.osm
 if [ $? -gt 0 ]
 then
-   echo *** Splitting feilet
+   echo *** Splitting failed
    exit 1
 fi
-$HOME/lagargsfilnorge
+
+$HOME/lagargsfilnorge		# Run the args file converting script
+
 if [ $? -gt 0 ]
 then
-   echo *** Generering av nyfil.args feilet
+	 echo *** Generating nyfil.args failed
    exit 1
 fi
 
