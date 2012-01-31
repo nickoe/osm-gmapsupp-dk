@@ -1,6 +1,7 @@
 # Project specefic stuff
 *.osm
 *.osm.bz2
+tools
 
 # Editors tempoary stuff
 *~

@@ -1,0 +1,24 @@
+# This scripts downloads mkgmap and splitter
+
+TOOLS=tools
+MKGMAP="http://www.mkgmap.org.uk/snapshots/mkgmap-r2179.tar.gz"
+SPLITTER="http://www.mkgmap.org.uk/splitter/splitter-r200.tar.gz"
+
+
+echo "Started to get tools"
+
+rm -rf $TOOLS
+mkdir $TOOLS
+cd $TOOLS
+
+wget $MKGMAP
+tar xzf mkgmap-r2179.tar.gz
+mv mkgmap-r2179 mkgmap
+rm mkgmap-r2179.tar.gz
+
+wget $SPLITTER
+tar xzf splitter-r200.tar.gz
+mv splitter-r200 splitter
+rm splitter-r200.tar.gz
+
+echo "Finished to get tools, it hopefully went succesfully"
